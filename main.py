@@ -19,4 +19,13 @@ connection = pymysql.connect(
 with connection:
     with connection.cursor() as cursor:
         #SQL
+        cursor.execute(
+            'CREATE TABLE users ( '
+            'id INT NOT NULL AUTO_INCREMENT, '
+            'name VARCHAR(50) NOT NULL, '
+            'idade INT NOT NULL, '
+            'PRIMARY KEY (id)'
+            ') '
+        )
+        connection.commit()
         print(cursor)
