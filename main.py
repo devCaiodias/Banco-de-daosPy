@@ -45,6 +45,23 @@ with connection:
         )
         data = ('Caio', 18)
         resultado = cursor.execute(sql, data)
-        print(sql, data)
+        # print(sql, data)
+        # print(resultado)
+    connection.commit()
+
+    with connection.cursor() as cursor:
+        sql = (
+            f'INSERT INTO {TABLE_NAME} '
+            '(name, idade) '
+            'VALUES ' 
+            '(%(name)s, %(age)s) '
+        )
+        data2 = {
+            "name": "vini",
+            "age": 19
+        }
+        data = ('Caio', 18)
+        resultado = cursor.execute(sql, data2)
+        print(sql, data2)
         print(resultado)
     connection.commit()
