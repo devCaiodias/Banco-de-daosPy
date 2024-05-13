@@ -33,18 +33,18 @@ with connection:
         cursor.execute(f'TRUNCATE TABLE {TABLE_NAME} ')
     connection.commit()
 
+    # COMEÇO A MANIPULAR DADOS A PARTIR DAQUI
+
     with connection.cursor() as cursor:
-        resultado = cursor.execute(
+        sql = (
             f'INSERT INTO {TABLE_NAME} '
-            '(name, idade) VALUES ("Caio Dias", 18) '
+            '(name, idade) '
+            'VALUES ' 
+            '(%s, %s) '
+
         )
-        resultado = cursor.execute(
-            f'INSERT INTO {TABLE_NAME} '
-            '(name, idade) VALUES ("Caio Dias", 18) '
-        )
-        resultado = cursor.execute(
-            f'INSERT INTO {TABLE_NAME} '
-            '(name, idade) VALUES ("Caio Dias", 18) '
-        )
+        data = ('Caio', 18)
+        resultado = cursor.execute(sql, data)
+        print(sql, data)
         print(resultado)
     connection.commit()
