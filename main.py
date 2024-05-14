@@ -3,12 +3,14 @@
 # Pypy: https://pypi.org/project/pymysql/
 # GitHub: https://github.com/PyMySQL/PyMySQL
 import os
+from typing import cast
 
 import pymysql
 import dotenv 
 import pymysql.cursors
 
 TABLE_NAME = 'users'
+CURRENT_CURSOR = pymysql.cursors.SSDictCursor
 
 dotenv.load_dotenv()
 
@@ -17,7 +19,7 @@ connection = pymysql.connect(
     user=os.environ['MYSQL_USER'],
     password=os.environ['MYSQL_PASSWORD'],
     database=os.environ['MYSQL_DATABASE'],
-    cursorclass=pymysql.cursors.DictCursor,
+    cursorclass=CURRENT_CURSOR,
 
 )
 
@@ -127,6 +129,7 @@ with connection:
         # for row in data5:
         #     print(row)
 
+    # Apagando com DELETE, WHERE e placeholders no PyMySQL
     with connection.cursor() as cursor:
         sql = (
             f'DELETE FROM {TABLE_NAME} '
@@ -140,7 +143,9 @@ with connection:
         # for row in cursor.fetchall():
         #     print(row)
 
+    # Editando com UPDATE, WHERE e placeholders no PyMySQL
     with connection.cursor() as cursor:
+        cursor = cast(CURRENT_CURSOR, cursor)
         sql = (
             f'UPDATE {TABLE_NAME} '
             'SET name=%s, idade=%s '
@@ -151,10 +156,16 @@ with connection:
 
         cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
 
-        # for row in cursor.fetchall():
-        #     _id, nome, age = row.items()
-        #     print(_id, nome, age)
+        print('For: 1')
+        for row in cursor.fetchall_unbuffered():
+            print(row)
 
-        for row in cursor.fetchall():
-            print(row['name'])
+            if row['id'] >= 5:
+                break
+
+        print()
+        print('For: 2')
+        # cursor.scroll(1)
+        for row in cursor.fetchall_unbuffered():
+            print(row)
     connection.commit()
