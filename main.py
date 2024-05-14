@@ -129,7 +129,21 @@ with connection:
             f'DELETE FROM {TABLE_NAME} '
             'WHERE id = %s'
         )
-        print(cursor.execute(sql, (4)))
+        cursor.execute(sql, (4))
+        connection.commit()
+
+        cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
+
+        # for row in cursor.fetchall():
+        #     print(row)
+
+    with connection.cursor() as cursor:
+        sql = (
+            f'UPDATE {TABLE_NAME} '
+            'SET name=%s, idade=%s '
+            'WHERE id = %s'
+        )
+        cursor.execute(sql, ('BABACA', 15, 5))
         connection.commit()
 
         cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
