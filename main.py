@@ -60,8 +60,42 @@ with connection:
             "name": "vini",
             "age": 19
         }
-        data = ('Caio', 18)
         resultado = cursor.execute(sql, data2)
-        print(sql, data2)
+        # print(sql, data2)
+        # print(resultado)
+    connection.commit()
+
+    with connection.cursor() as cursor:
+        sql = (
+            f'INSERT INTO {TABLE_NAME} '
+            '(name, idade) '
+            'VALUES ' 
+            '(%(name)s, %(age)s) '
+        )
+        data3 = (
+            {"name": "Debora", "age": 20,},
+            {"name": "João", "age": 22,},
+            {"name": "Alan", "age": 23,},
+        )
+        # cursor.executemany para enviar mais de um dados para sua tabela
+        resultado = cursor.executemany(sql, data3)
+        print(sql, data3)
+        print(resultado)
+    connection.commit()
+
+    with connection.cursor() as cursor:
+        sql = (
+            f'INSERT INTO {TABLE_NAME} '
+            '(name, idade) '
+            'VALUES ' 
+            '(%s, %s) '
+        )
+        data4 = (
+            ("baibo", 20,),
+            ("sixk", 22,)
+        )
+        # cursor.executemany para enviar mais de um dados para sua tabela
+        resultado = cursor.executemany(sql, data4)
+        print(sql, data4)
         print(resultado)
     connection.commit()
