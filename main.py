@@ -10,7 +10,7 @@ import dotenv
 import pymysql.cursors
 
 TABLE_NAME = 'users'
-CURRENT_CURSOR = pymysql.cursors.SSDictCursor
+CURRENT_CURSOR = pymysql.cursors.DictCursor
 
 dotenv.load_dotenv()
 
@@ -151,21 +151,25 @@ with connection:
             'SET name=%s, idade=%s '
             'WHERE id = %s'
         )
-        cursor.execute(sql, ('BABACA', 15, 5))
-        connection.commit()
+        cursor.execute(sql, ('davi', 58, 7))
+        resultFromSelect = cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
 
-        cursor.execute(f'SELECT * FROM {TABLE_NAME} ')
+        data7 = cursor.fetchall()
 
-        print('For: 1')
-        for row in cursor.fetchall_unbuffered():
+        for row in data7:
             print(row)
 
-            if row['id'] >= 5:
-                break
+        cursor.execute(
+            f'SELECT id from {TABLE_NAME} ORDER BY id DESC LIMIT 1 '
+        )
 
-        print()
-        print('For: 2')
-        # cursor.scroll(1)
-        for row in cursor.fetchall_unbuffered():
-            print(row)
+        lastIdFromSelect = cursor.fetchone()
+
+        print('resultFromSelect', resultFromSelect)
+        print('len(data7)', len(data7))
+        print('rowcount', cursor.rowcount)
+
+        print('lastrowid na mão', lastIdFromSelect)
+
+
     connection.commit()
