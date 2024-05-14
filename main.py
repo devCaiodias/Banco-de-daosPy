@@ -35,6 +35,7 @@ with connection:
 
     # COMEÇO A MANIPULAR DADOS A PARTIR DAQUI
 
+    # Inserindo um valor usando placeholder e um iterável
     with connection.cursor() as cursor:
         sql = (
             f'INSERT INTO {TABLE_NAME} '
@@ -49,6 +50,7 @@ with connection:
         # print(resultado)
     connection.commit()
 
+    # Inserindo um valor usando placeholder e um dicionário
     with connection.cursor() as cursor:
         sql = (
             f'INSERT INTO {TABLE_NAME} '
@@ -65,6 +67,7 @@ with connection:
         # print(resultado)
     connection.commit()
 
+    # Inserindo vários valores usando placeholder e um tupla de dicionários
     with connection.cursor() as cursor:
         sql = (
             f'INSERT INTO {TABLE_NAME} '
@@ -79,10 +82,11 @@ with connection:
         )
         # cursor.executemany para enviar mais de um dados para sua tabela
         resultado = cursor.executemany(sql, data3)
-        print(sql, data3)
-        print(resultado)
+        # print(sql, data3)
+        # print(resultado)
     connection.commit()
 
+    # Inserindo vários valores usando placeholder e um tupla de tuplas
     with connection.cursor() as cursor:
         sql = (
             f'INSERT INTO {TABLE_NAME} '
@@ -96,6 +100,18 @@ with connection:
         )
         # cursor.executemany para enviar mais de um dados para sua tabela
         resultado = cursor.executemany(sql, data4)
-        print(sql, data4)
-        print(resultado)
+        # print(sql, data4)
+        # print(resultado)
     connection.commit()
+
+    # Lendo os valores com SELECT
+
+    with connection.cursor() as cursor:
+        sql = (
+            f'SELECT * FROM {TABLE_NAME} '
+        )
+        cursor.execute(sql)
+        data5 = cursor.fetchall()
+
+        for row in data5:
+            print(row)
