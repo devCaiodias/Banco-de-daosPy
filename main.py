@@ -96,7 +96,8 @@ with connection:
         )
         data4 = (
             ("baibo", 20,),
-            ("sixk", 22,)
+            ("sixk", 22,),
+            ("Caio", 18)
         )
         # cursor.executemany para enviar mais de um dados para sua tabela
         resultado = cursor.executemany(sql, data4)
@@ -107,10 +108,15 @@ with connection:
     # Lendo os valores com SELECT
 
     with connection.cursor() as cursor:
+        menor_id = int(input('Dijite menor id: '))
+        maior_id = int(input('Dijite menor id: '))
+        
         sql = (
             f'SELECT * FROM {TABLE_NAME} '
+            'WHERE id BETWEEN %s AND %s '
         )
-        cursor.execute(sql)
+        cursor.execute(sql, (menor_id, maior_id))
+        print(cursor.mogrify(sql, (menor_id, maior_id)))
         data5 = cursor.fetchall()
 
         for row in data5:
